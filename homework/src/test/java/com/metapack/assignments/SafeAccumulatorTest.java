@@ -1,5 +1,6 @@
 package com.metapack.assignments;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class SafeAccumulatorTest {
 
     @Test
+    @DisplayName("accumulate() returns correct value for different formats of provided parameters")
     void testAccumulate() {
         var acu = new SafeAccumulator();
 
@@ -20,6 +22,7 @@ class SafeAccumulatorTest {
     }
 
     @Test
+    @DisplayName("getTotal returns correct value after different operations")
     void testGetTotal() {
         var acu = new SafeAccumulator();
 
@@ -30,9 +33,13 @@ class SafeAccumulatorTest {
 
         acu.accumulate(1, 2, 3, -1);
         assertEquals(60, acu.getTotal(), "getTotal() should return value equal to sum of all accumulated values");
+
+        acu.reset();
+        assertEquals(0, acu.getTotal(), "getTotal() should return 0 after reset");
     }
 
     @Test
+    @DisplayName("reset() sets total sum to 0")
     void testReset() {
         //given
         var acu = new SafeAccumulator();
@@ -66,8 +73,8 @@ class SafeAccumulatorTest {
     void accumulateThrowsExceptionWhenTotalWouldExceedIntegerMax() {
         var acu = new SafeAccumulator();
         acu.accumulate(Integer.MAX_VALUE);
-        Exception exception = assertThrows(ArithmeticException.class, () -> acu.accumulate(1));
 
+        Exception exception = assertThrows(ArithmeticException.class, () -> acu.accumulate(1));
         var expectedMsg = "Operation exceeds Integer boundaries for total sum!";
         assertEquals(expectedMsg, exception.getMessage());
     }
@@ -78,7 +85,6 @@ class SafeAccumulatorTest {
         acu.accumulate(Integer.MIN_VALUE);
 
         Exception exception = assertThrows(ArithmeticException.class, () -> acu.accumulate(-1));
-
         var expectedMsg = "Operation exceeds Integer boundaries for total sum!";
         assertEquals(expectedMsg, exception.getMessage());
     }
